@@ -1,4 +1,5 @@
 from datetime import date
+import os
 from pathlib import Path
 
 from flask import Flask, json
@@ -35,6 +36,8 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     if app.env == "development":
         app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////tmp/menu.sqlite"
+    if "SQLALCHEMY_DATABASE_URI" in os.environ:
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"]
     db.init_app(app)
     if app.config["SQLALCHEMY_DATABASE_URI"].startswith("sqlite:"):
         def _fk_pragma_on_connect(dbapi_con, con_record):
