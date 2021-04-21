@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
-const API_BASE = process.env.REACT_APP_API_BASE;
+const API_BASE = process.env.REACT_APP_API_BASE || "";
 
 function MealEditor(props: {editing: boolean, onSave?: any, onDiscard?: any, onEdit?: any}) {
   const onSave = props.onSave || (() => {});

@@ -39,7 +39,7 @@ def update_day(date: datetime.date):
         day.date = date
     if "meal" in request.form:
         day.meal = request.form["meal"] or None
-    if "source_id" in request.form:
+    if "source_id" in request.form and request.form["source_id"]:
         try:
             day.source_id = int(request.form["source_id"]) or None
         except ValueError:
