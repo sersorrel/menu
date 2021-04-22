@@ -12,6 +12,10 @@
   text-align: right;
 }
 
+.no-wrap {
+  white-space: nowrap;
+}
+
 td {
   vertical-align: top;
 }
