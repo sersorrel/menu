@@ -35,7 +35,8 @@ function Meal(props: {date: string, data: {source: any, meal: any}, sources: any
     setEditing(false);
     props.onUpdate(localData);
   }
-  const theDate = props.date === today ? <strong>Today:</strong> : props.date === tomorrow ? <>Tomorrow:</> : <>{props.date}:</>;
+  const theDay = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][(new Date(props.date)).getDay()];
+  const theDate = props.date === today ? <strong>Today, {theDay}:</strong> : props.date === tomorrow ? <>Tomorrow, {theDay}:</> : <>{props.date}, {theDay}:</>;
   function onUpdateSource(event: any) {
     setLocalData(prevData => ({...prevData, source: event.target.value}));
   }
@@ -43,13 +44,13 @@ function Meal(props: {date: string, data: {source: any, meal: any}, sources: any
     setLocalData(prevData => ({...prevData, meal: event.target.value}));
   }
   if (editing) {
-    return <p>{theDate} <select value={localData.source || 0} onChange={onUpdateSource}><option key={0} value={0}>nobody</option>{props.sources.map((s: any) => <option key={s.id} value={s.id}>{s.name}</option>)}</select> <input type="text" value={localData.meal || ""} size={10} placeholder='"Food"' onChange={onUpdateMeal} /> <MealEditor editing={editing} onEdit={onEdit} onSave={onSave} onDiscard={onDiscard} /></p>;
+    return <tr><td className="align-right">{theDate}</td><td><select value={localData.source || 0} onChange={onUpdateSource}><option key={0} value={0}>nobody</option>{props.sources.map((s: any) => <option key={s.id} value={s.id}>{s.name}</option>)}</select> <input type="text" value={localData.meal || ""} size={10} placeholder='"Food"' onChange={onUpdateMeal} /> <MealEditor editing={editing} onEdit={onEdit} onSave={onSave} onDiscard={onDiscard} /></td></tr>;
   } else {
     let theProvider = data?.source ? data.source.name : "nobody";
     if (props.date === today) {
       theProvider = <strong>{theProvider}</strong>;
     }
-    return <p>{theDate} {theProvider} {data?.meal ? `(${data.meal})` : null} <MealEditor editing={editing} onEdit={onEdit} onSave={onSave} onDiscard={onDiscard} /></p>
+    return <tr><td className="align-right">{theDate}</td><td>{theProvider} {data?.meal ? `(${data.meal})` : null} <MealEditor editing={editing} onEdit={onEdit} onSave={onSave} onDiscard={onDiscard} /></td></tr>
   }
 }
 
@@ -70,7 +71,7 @@ function App() {
         <h1>whomst food</h1>
       </header>
       <main>
-        {data == null ? "Loading..." : <>
+        {data == null ? "Loading..." : <><table><tbody>
           {[...Array(7)].map((_, i) => {
             const theDate = new Date((new Date().setDate(now.getDate() + i))).toISOString().split("T")[0];
             return <Meal
@@ -91,7 +92,7 @@ function App() {
               }}
             />;
           })}
-        </>
+        </tbody></table></>
         }
       </main>
     </div>

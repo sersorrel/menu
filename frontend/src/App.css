@@ -8,6 +8,14 @@
   pointer-events: none;
 }
 
+.align-right {
+  text-align: right;
+}
+
+td {
+  vertical-align: top;
+}
+
 /* .App-header { */
 /*   background-color: #282c34; */
 /*   display: flex; */
