@@ -35,6 +35,14 @@ function Meal(props: {date: string, data: {source: any, meal: any}, sources: any
     setEditing(false);
     props.onUpdate(localData);
   }
+  function onKeyPress(event: any) {
+    if (event.isComposing || event.keyCode === 229) {
+      return;
+    }
+    if (event.key === "Enter") {
+      onSave();
+    }
+  }
   const theDay = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][(new Date(props.date)).getDay()];
   const theDate = props.date === today ? <strong>Today, {theDay}:</strong> : props.date === tomorrow ? <>Tomorrow, {theDay}:</> : <>{props.date}, {theDay}:</>;
   function onUpdateSource(event: any) {
@@ -44,7 +52,7 @@ function Meal(props: {date: string, data: {source: any, meal: any}, sources: any
     setLocalData(prevData => ({...prevData, meal: event.target.value}));
   }
   if (editing) {
-    return <tr><td className="align-right no-wrap">{theDate}</td><td><select value={localData.source || 0} onChange={onUpdateSource}><option key={0} value={0}>nobody</option>{props.sources.map((s: any) => <option key={s.id} value={s.id}>{s.name}</option>)}</select> <input type="text" value={localData.meal || ""} size={10} placeholder='"Food"' onChange={onUpdateMeal} /> <MealEditor editing={editing} onEdit={onEdit} onSave={onSave} onDiscard={onDiscard} /></td></tr>;
+    return <tr><td className="align-right no-wrap">{theDate}</td><td><select value={localData.source || 0} onChange={onUpdateSource}><option key={0} value={0}>nobody</option>{props.sources.map((s: any) => <option key={s.id} value={s.id}>{s.name}</option>)}</select> <input type="text" value={localData.meal || ""} size={10} placeholder='"Food"' onChange={onUpdateMeal} onKeyPress={onKeyPress} /> <MealEditor editing={editing} onEdit={onEdit} onSave={onSave} onDiscard={onDiscard} /></td></tr>;
   } else {
     let theProvider = data?.source ? data.source.name : "nobody";
     if (props.date === today) {
